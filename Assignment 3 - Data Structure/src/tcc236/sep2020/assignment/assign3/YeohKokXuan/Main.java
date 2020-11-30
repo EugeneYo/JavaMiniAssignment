@@ -18,14 +18,26 @@ import java.util.Scanner;
 
 public class Main {
 
-    // Linear Search for specific ID as an input
+    // Binary Search for specific ID as an input
     public static int searchID(Transactions[] transactions, int index, int id) {
-        for (int i = 0; i < index; i++) {
-            if (transactions[i].getID() == id) {
-                transactions[i].printInvoice();
-                return i;
+        int start = 0;
+        int end = index;
+
+        while (start < end) {
+            int midpoint = (start + end) / 2;
+
+            if (transactions[midpoint].getID() == id) {
+                transactions[midpoint].printInvoice();
+                return midpoint;
+            }
+            else if (transactions[midpoint].getID() < id) {
+                start = midpoint + 1;
+            }
+            else {
+                end = midpoint;
             }
         }
+
         return -1;
     }
 
