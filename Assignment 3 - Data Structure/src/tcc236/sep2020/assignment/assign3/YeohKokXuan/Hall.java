@@ -4,7 +4,7 @@ package tcc236.sep2020.assignment.assign3.YeohKokXuan;
 /************************************************************************************************
  * Course Code   : TCC236/05
  * Course Title  : Data Structures and Algorithms
- * Student ID    : 141190136, 141190025, 141190043
+ * Student ID    : 141190136
  * Author        : Yeoh Kok Xuan
  * Date          : 01/12/2020
  * Honour Code   : I pledge that this is our own program code.
