@@ -15,8 +15,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Hall {
     private int size;
@@ -72,42 +73,49 @@ public class Hall {
     public void displaySeats() {
         String tab = "\t\t\t\t\t\t\t\t";
         String dash = "------------------------------------------------------------------";
-        LocalDate date = LocalDate.now();
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        String strDate = formatter.format(date);
+        formatter = new SimpleDateFormat("hh:mm:ss");
+        String strTime = formatter.format(date);
 
-        System.out.println("\t\tHall " + tab + tab + tab + "\t\t\t\t\t  " + date);
-        System.out.printf(tab + tab + tab + tab + "\t%tT%n", Calendar.getInstance());
 
-        System.out.println("\t\t" + dash + dash);
-        System.out.println("\t\t[" + tab + tab + "Stage" + tab + tab + "]");
-        System.out.println("\t\t" + dash + dash + "\n\n");
+        System.out.format("%-120s%s\n","Hall",strDate);
+        System.out.format("%-120s%s","", strTime);
+        System.out.println();
+
+        System.out.println( dash + dash);
+        System.out.format("%-62s %5s %62s\n","[", "Stage", "]");
+        System.out.println( dash + dash + "\n\n");
         int firstIndex = (size / 10);
         int secondIndex = 0;
+
         if (size > 60) {
             secondIndex = firstIndex / 4 * 3;
         }
+
         int j = 0;
         for (int i = 0; i < firstIndex; i++) {
-            System.out.print("\t\t");
             if (i > secondIndex) {
-                System.out.print("\n\t\t\t\t");
+                System.out.format("\n%4s", "");
                 for (int k = 0; k < 10; k++) {
-                    System.out.print(seats[j].isTaken() + "\t");
+                    System.out.format("%9s%4s",seats[j].isTaken(), "");
                     j++;
                 }
 
                 continue;
             }
             for (int k = 0; k < 10; k++) {
-                System.out.print(seats[j].isTaken() + "\t");
+                System.out.format("%9s%4s",seats[j].isTaken(),"");
                 if (k == 1 || k == 7) {
-                    System.out.print("\t\t");
+                    System.out.format("%4s","");
                 }
                 j++;
             }
             System.out.println();
         }
     }
-
+    
     // Get all the data and details from Invoices.txt
     public int getData(Transactions[] transactions, Hall hall) throws IOException {
         Transactions[] data = new Transactions[50];
@@ -115,26 +123,27 @@ public class Hall {
         String line = "";
         String str;
 
-
         int i = 0;
         int position = 0;
         int position2 = 0;
         if (file.exists()) {
             FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
-            while ((line = br.readLine()) != null) {
 
+            while ((line = br.readLine()) != null) {
                 if (line.contains("#")) {
                     position = line.indexOf("#");
                     position2 = line.lastIndexOf("#");
                     str = line.substring(position + 1, position2);
                     int id = Integer.parseInt(str);
                     transactions[i] = new Transactions(6, id);
+
                 } else if (line.contains("Customer :")) {
                     position = line.indexOf("Customer : ") + 11;
                     position2 = line.length();
                     str = line.substring(position, position2);
                     transactions[i].setCustomerName(str);
+
                 } else if (line.contains("Date : ") && line.contains("Time : ")) {
                     position = line.indexOf("Date : ") + 7;
                     position2 = position + 10;
@@ -145,6 +154,7 @@ public class Hall {
                     position2 = line.length();
                     str = line.substring(position, position2);
                     transactions[i].setTime(str);
+
                 } else if (line.contains("PRICE") && line.contains("SEAT")) {
                     while (true) {
                         line = br.readLine();
@@ -156,12 +166,14 @@ public class Hall {
                         transactions[i].addItems(str);
                         hall.buyTicket(str);
                     }
+
                 } else if (line.contains("TOTAL PRICE")) {
                     position = line.indexOf("RM") + 2;
                     position2 = line.length();
                     str = line.substring(position, position2);
                     double num = Double.parseDouble(str);
                     transactions[i].setTotal(num);
+
                 } else if (line.contains("AMOUNT PAID")) {
                     position = line.indexOf("RM") + 2;
                     position2 = line.length();
@@ -178,3 +190,4 @@ public class Hall {
         return i;
     }
 }
+
