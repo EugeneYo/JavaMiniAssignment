@@ -15,7 +15,7 @@ public class Seats {
     private final int number;
     private boolean buy;
     private final static double price = 192.50;
-    private String name;
+   
 
 
     public Seats(char character, int number) {
