@@ -118,7 +118,6 @@ public class Hall {
     
     // Get all the data and details from Invoices.txt
     public int getData(Transactions[] transactions, Hall hall) throws IOException {
-        Transactions[] data = new Transactions[50];
         File file = new File("Invoices.txt");
         String line = "";
         String str;
